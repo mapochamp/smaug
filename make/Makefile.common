@@ -52,6 +52,8 @@ SRCS = smaug/operators/common.cpp \
        smaug/operators/smv/kernels/load_store_fp16_data.c \
        smaug/operators/smv/smv_accel_pool.cpp \
        smaug/core/backend.cpp \
+       smaug/core/static_graph_analyzer.cpp \
+       smaug/core/graph_test.cpp \
        smaug/core/globals.cpp \
        smaug/core/tensor.cpp \
        smaug/core/tensor_utils.cpp \
@@ -71,6 +73,7 @@ TESTS_COMMON = smaug/core/smaug_test.cpp \
                smaug/operators/smv/smv_test_common.cpp
 TESTS = smaug/core/tensor_test.cpp \
         smaug/core/network_test.cpp \
+        smaug/core/graph_analysis_test.cpp \
         smaug/operators/ref/ref_convolution_op_test.cpp \
         smaug/operators/ref/ref_batch_norm_op_test.cpp \
         smaug/operators/ref/ref_depthwise_convolution_op_test.cpp \

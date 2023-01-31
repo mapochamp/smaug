@@ -2,6 +2,8 @@
  * \file smaug_test.h
  * \brief SMAUG unit test fixture.
  */
+#ifndef _CORE_TEST_H_
+#define _CORE_TEST_H_
 
 #include <fstream>
 
@@ -186,3 +188,4 @@ Tensor* convertFp16ToFp32Tensor(Tensor* fp16Tensor, Workspace* workspace);
 Tensor* convertFp32ToFp16Tensor(Tensor* fp32Tensor, Workspace* workspace);
 
 }  // namespace smaug
+#endif

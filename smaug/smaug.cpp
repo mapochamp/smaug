@@ -21,7 +21,7 @@ int main(int argc, char* argv[]) {
     std::string modelParams;
     int debugLevel = -1;
     std::string lastOutputFile;
-    bool dumpGraph = false;
+    bool dumpGraph = true;
     runningInSimulation = false;
     SamplingInfo sampling;
     std::string samplingLevel = "no";

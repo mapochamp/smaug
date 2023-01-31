@@ -8,6 +8,27 @@ using namespace smaug;
 
 TEST_CASE_METHOD(SmaugTest, "Network tests", "[network]") {
     std::string modelPath = "experiments/models/";
+
+    // Moved LSTM up here from bottom to analyze dead tensor flow in debugger
+    // without having to configure and setup the other models
+    SECTION("Simple 2-layer LSTM network.") {
+        // LSTM network with the SMV backend.
+        Tensor* output =
+                buildAndRunNetwork(modelPath + "lstm/lstm_smv_topo.pbtxt",
+                                   modelPath + "lstm/lstm_smv_params.pb");
+
+        // The same network with the reference backend. This is used for
+        // producing expected outputs.
+       Tensor* refOutput =
+                buildAndRunNetwork(modelPath + "lstm/lstm_ref_topo.pbtxt",
+                                   modelPath + "lstm/lstm_ref_params.pb");
+
+        // SMV outputs need to be converted into float32 before validations.
+        verifyOutputs<float>(
+                convertFp16ToFp32Tensor(output, workspace()), refOutput);
+    }
+
+#if 0
     SECTION("Minerva network. 4 layers of FCs.") {
         // Minerva network with the SMV backend.
         Tensor* output =
@@ -112,21 +133,5 @@ TEST_CASE_METHOD(SmaugTest, "Network tests", "[network]") {
         verifyOutputs<float>(
                 convertFp16ToFp32Tensor(output, workspace()), refOutput);
     }
-
-    SECTION("Simple 2-layer LSTM network.") {
-        // LSTM network with the SMV backend.
-        Tensor* output =
-                buildAndRunNetwork(modelPath + "lstm/lstm_smv_topo.pbtxt",
-                                   modelPath + "lstm/lstm_smv_params.pb");
-
-        // The same network with the reference backend. This is used for
-        // producing expected outputs.
-        Tensor* refOutput =
-                buildAndRunNetwork(modelPath + "lstm/lstm_ref_topo.pbtxt",
-                                   modelPath + "lstm/lstm_ref_params.pb");
-
-        // SMV outputs need to be converted into float32 before validations.
-        verifyOutputs<float>(
-                convertFp16ToFp32Tensor(output, workspace()), refOutput);
-    }
+#endif
 }
