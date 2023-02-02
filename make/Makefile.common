@@ -53,6 +53,7 @@ SRCS = smaug/operators/common.cpp \
        smaug/operators/smv/smv_accel_pool.cpp \
        smaug/core/backend.cpp \
        smaug/core/static_graph_analyzer.cpp \
+       smaug/core/liveness_data.cpp \
        smaug/core/graph_test.cpp \
        smaug/core/globals.cpp \
        smaug/core/tensor.cpp \

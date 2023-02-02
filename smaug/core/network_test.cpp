@@ -28,7 +28,6 @@ TEST_CASE_METHOD(SmaugTest, "Network tests", "[network]") {
                 convertFp16ToFp32Tensor(output, workspace()), refOutput);
     }
 
-#if 0
     SECTION("Minerva network. 4 layers of FCs.") {
         // Minerva network with the SMV backend.
         Tensor* output =
@@ -133,5 +132,6 @@ TEST_CASE_METHOD(SmaugTest, "Network tests", "[network]") {
         verifyOutputs<float>(
                 convertFp16ToFp32Tensor(output, workspace()), refOutput);
     }
+#if 0
 #endif
 }
