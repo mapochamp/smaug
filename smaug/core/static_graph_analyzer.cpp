@@ -104,6 +104,8 @@ void GraphAnalyzer::get_liveness_data()
 
         op_cycle++;
     }
+
+    this->remove_duplicate_cycles();
 }
 
 void GraphAnalyzer::print_tensor_map()
@@ -146,6 +148,14 @@ void GraphAnalyzer::dry_run_network()
     }
 
     scheduleReady();
+}
+
+void GraphAnalyzer::remove_duplicate_cycles()
+{
+    for(auto &node : livenessMap)
+    {
+        node.second.remove_duplicate_cycles();
+    }
 }
 
 } //smaug

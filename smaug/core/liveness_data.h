@@ -15,6 +15,7 @@ class LivenessData {
 
         void update_liveness(uint32_t cycle);
         std::string get_access_time_string();
+        void remove_duplicate_cycles();
 
         std::list<uint32_t> get_access_times() const;
         uint32_t get_ttl() const;

@@ -28,6 +28,7 @@ class GraphAnalyzer : public Scheduler {
         void print_ops(std::list<Operator*> queue);
         void get_liveness_data();
         void update_liveness_map(TensorBase* tensor, uint32_t op_cycle);
+        void remove_duplicate_cycles();
 
         std::map<Tensor, bool> tensorPinMap;
         std::map<TensorBase*, LivenessData> livenessMap;

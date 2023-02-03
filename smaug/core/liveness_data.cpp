@@ -28,4 +28,10 @@ std::string LivenessData::get_access_time_string()
 
     return access_string;
 }
+
+void LivenessData::remove_duplicate_cycles()
+{
+    use_counts.unique();
+}
+
 } //smaug
