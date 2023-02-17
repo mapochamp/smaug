@@ -6,23 +6,13 @@
 
 namespace smaug {
 
-auto print_pin = [](auto &node, auto& livenessMap) {
+auto print_pin = [](auto &node) {
     std::cout << "OPERATOR: [" << node.first->getName() << "] = " << std::endl;
     std::vector<TensorBase*> pin_vec = node.second;
     for(TensorBase* tensor : pin_vec) {
-        auto liveness = livenessMap[tensor];
-        std::cout << tensor->getName()
-            << " begin time: " << liveness->get_start_time()
-            << " end time: " << liveness->get_end_time()
-            << std::endl;
+        std::cout << tensor->getName() << std::endl;
     }
 };
-
-// returns a pointer to the pin map
-std::map<Operator*, std::vector<TensorBase*>>* GraphAnalyzer::get_pin_map()
-{
-    return &tensorPinMap;
-}
 
 void GraphAnalyzer::compare_schedule_list()
 {
@@ -65,7 +55,7 @@ void GraphAnalyzer::compare_schedule_list()
 void GraphAnalyzer::print_ops(std::list<Operator*> queue)
 {
     for(auto op : queue) {
-        std::cout << "OPERATOR NAME: " << op->getName() << std::endl;
+        std::cout << "TENSOR NAME: " << op->getName() << std::endl;
         auto tensor_vector = op->getInputs();
         std::cout << "TENSOR INPUTS: " << std::endl;
         for(auto tensor : tensor_vector) {
@@ -127,30 +117,8 @@ void GraphAnalyzer::get_liveness_data()
     this->remove_duplicate_cycles();
 }
 
-void GraphAnalyzer::clean_ttl()
+void GraphAnalyzer::remove_ttl_overlaps()
 {
-    int cycle{};
-
-    for(auto op : readyQueue) {
-        std::cout << "Cleaning pins for Op: " << op->getName() << std::endl;
-        auto &pin_vec = tensorPinMap[op];
-        auto pin_vec_copy = pin_vec;
-
-        for(auto tensor : pin_vec) {
-            auto min = livenessMap[tensor]->get_start_time();
-            auto max = livenessMap[tensor]->get_end_time();
-            std::cout << "considering tensor : " << tensor->getName() << std::endl;
-            std::cout << "begin: " << min << " end: " << max << std::endl;
-            if(min > cycle || max < cycle) {
-                std::cout << "removing tensor : " << tensor->getName() << std::endl;
-                pin_vec_copy.erase(std::remove(pin_vec_copy.begin(), pin_vec_copy.end(), \
-                            tensor), pin_vec_copy.end());
-            }
-            std::cout << "----------------------\n" << std::endl;
-        }
-        pin_vec = pin_vec_copy;
-        cycle++;
-    }
 }
 
 // sort all the tensors based on their FoM. std::map is sorted by default since
@@ -170,75 +138,106 @@ void GraphAnalyzer::validate_pin()
 {
     // The backend here is hardcoded. This not ideal and should
     // be changed to be passed in as a param.
+    std::cout << __LINE__ << std::endl;
     int spad_size = SmvBackend::SpadSize();
-    // we do spad_count - 1 since we don't want to write to the output spad
+    // we do spac_count - 1 since we don't want to write to the output spad
+    std::cout << __LINE__ << std::endl;
     int total_spad_size = spad_size * (spad_count -1);
     // list of tensors that are not in the input list for an op
+    std::cout << __LINE__ << std::endl;
     std::vector<TensorBase*> non_input_vector{};
 
     // for each operator in the pin map, we want to go through and check that
     // each pinCandidate in the pinMap will actually fit and is needed
+    std::cout << __LINE__ << std::endl;
 
     for(const auto op : readyQueue) {
-        std::cout << "Operator cycle: " << op->getName() << std::endl;
+    std::cout << __LINE__ << std::endl;
         auto &pin_vec = tensorPinMap[op];
+        std::cout << __LINE__ << std::endl;
         auto inputs = op->getInputs();
+        std::cout << __LINE__ << std::endl;
         int input_tensors_size{};
+        std::cout << __LINE__ << std::endl;
         int remaining_spad_space{};
+        std::cout << __LINE__ << std::endl;
         auto tensor_size = [](auto tensor_vec) {
+        std::cout << __LINE__ << std::endl;
             int size{};
+            std::cout << __LINE__ << std::endl;
             for(auto i : tensor_vec) {
+                std::cout << __LINE__ << std::endl;
                 i->getShape().storageSize() * i->getDataTypeSize();
+                std::cout << __LINE__ << std::endl;
             }
+            std::cout << __LINE__ << std::endl;
             return size;
         };
+        std::cout << __LINE__ << std::endl;
         input_tensors_size = tensor_size(inputs);
+        std::cout << __LINE__ << std::endl;
         remaining_spad_space = total_spad_size - input_tensors_size;
+        std::cout << __LINE__ << std::endl;
 
         // TODO: for each iteration of the readyQueue, keep track of the cycle
         // and reference the livenessMap to see if the tensor in the pinmap
         // is alive before the current op.
-        auto pin_vec_copy = pin_vec;
         for(auto tensor : pin_vec) {
+            std::cout << __LINE__ << std::endl;
             int tensor_size = tensor->getShape().storageSize() * tensor->getDataTypeSize();
             // if the tensor is larger than the spads then don't pin
+            std::cout << __LINE__ << std::endl;
             if(tensor_size > total_spad_size) {
-                enforce_onsram_lifetime(tensor);
-                //pin_vec_copy.erase(std::remove(pin_vec_copy.begin(), pin_vec_copy.end(), \
-                //            tensor), pin_vec_copy.end());
+                std::cout << __LINE__ << std::endl;
+                std::remove(pin_vec.begin(), pin_vec.end(), tensor);
             }
             // if the tensor is not an input and larger then the remaining
             // available space if the inputs were pinned, don't pin
+            std::cout << __LINE__ << std::endl;
             if(std::find(inputs.begin(), inputs.end(), tensor) == inputs.end()) {
+                std::cout << __LINE__ << std::endl;
                 non_input_vector.push_back(tensor);
+                std::cout << __LINE__ << std::endl;
                 if(tensor_size > remaining_spad_space) {
-                    enforce_onsram_lifetime(tensor);
-                    //pin_vec_copy.erase(std::remove(pin_vec_copy.begin(), pin_vec_copy.end(), \
-                    //            tensor), pin_vec_copy.end());
+                    std::cout << __LINE__ << std::endl;
+                    std::remove(pin_vec.begin(), pin_vec.end(), tensor);
+                    std::cout << __LINE__ << std::endl;
                 }
             }
         }
-        pin_vec = pin_vec_copy;
 
         // for all the tensors that are left as pin candidates, all of them may not
         // be able to coexist. So sort by FOM and temporal priority and start
         // pruning.
+        std::cout << __LINE__ << std::endl;
         auto fom_map = this->sort(non_input_vector);
+        std::cout << __LINE__ << std::endl;
+        for(auto &node : tensorPinMap)
+        {
+            print_pin(node);
+        }
         for(auto [key, val] : fom_map) {
+            std::cout << __LINE__ << std::endl;
             std::cout << "about to validate: " << key->getName() << std::endl;
             int tensor_size = key->getShape().storageSize() * key->getDataTypeSize();
             std::cout << "remaining_spad_space: " << remaining_spad_space << std::endl;
-            std::cout << "tensor: " << key->getName() << " storageSize: "  << \
-                key->getShape().storageSize() << " DataTypeSize: " << \
+            std::cout << "tensor: " << key->getName() << " storageSize: "  <<
+                key->getShape().storageSize() << " DataTypeSize: " << 
                 key->getDataTypeSize() << std::endl;
-
+            std::cout << __LINE__ << std::endl;
             if(tensor_size >= remaining_spad_space) {
-                auto pos = std::find(pin_vec.begin(), pin_vec.end(), key);
-                if(pos != pin_vec.end()) {
+                std::cout << __LINE__ << std::endl;
+                //pin_vec.erase(std::find(pin_vec.begin(), pin_vec.end(), key));
+                if(auto pos = std::find(pin_vec.begin(), pin_vec.end(), key) != pin_vec.end()) {
+                std::cout << __LINE__ << std::endl;
                     pin_vec.erase(pos);
                 }
+                //std::cout << __LINE__ << std::endl;
+                //fom_map.erase(key);
             } else {
+                std::cout << __LINE__ << std::endl;
                 remaining_spad_space -= tensor_size;
+                std::cout << __LINE__ << std::endl;
             }
         }
 
@@ -273,21 +272,6 @@ void GraphAnalyzer::validate_pin()
 
 }
 
-// Remove all instances of the given tensor from the pin map
-void GraphAnalyzer::enforce_onsram_lifetime(TensorBase* tensor)
-{
-    for(auto &node : tensorPinMap) {
-        auto& pin_vec = node.second;
-        auto pin_vec_copy = pin_vec;
-
-        if(std::find(pin_vec_copy.begin(), pin_vec_copy.end(), tensor) != pin_vec_copy.end()) {
-            pin_vec_copy.erase(std::remove(pin_vec_copy.begin(), pin_vec_copy.end(), \
-                        tensor), pin_vec_copy.end());
-        }
-        pin_vec = pin_vec_copy;
-    }
-}
-
 void GraphAnalyzer::create_pin_map()
 {
     // iterate backwards through the list
@@ -303,14 +287,8 @@ void GraphAnalyzer::create_pin_map()
         if(prev_op != op) { // if we are the last in the schedule, ignore
             const auto prev_pin_vec = tensorPinMap[*prev_op];
             auto &curr_pin_vec = tensorPinMap[*op];
-            for(const auto pinCand : prev_pin_vec)
+            for(const auto pinCand : prev_pin_vec) 
             {
-                // if there is something that the next op expects to be pinned,
-                // we should have it pinned as well if we don't already eg. if
-                // mat_mul_4 requires data_1 as input and we are currently
-                // mat_mul_3 and data_1 is neither in our inputs or outputs, we
-                // should pin data_1 and recursively update the previous ops
-                // behind us that create data_1 to pin it
                 if(std::find(curr_pin_vec.begin(), curr_pin_vec.end(),
                             pinCand) == curr_pin_vec.end()) {
                     curr_pin_vec.push_back(pinCand);
@@ -320,6 +298,10 @@ void GraphAnalyzer::create_pin_map()
         }
         prev_op = op;
     }
+}
+
+void GraphAnalyzer::update_pin_map()
+{
 }
 
 void GraphAnalyzer::print_pin_map()
@@ -334,43 +316,23 @@ void GraphAnalyzer::print_pin_map()
     this->create_pin_map();
     for(auto &node : tensorPinMap)
     {
-        print_pin(node, livenessMap);
+        print_pin(node);
     }
-    std::cout << "======================================================\n";
-    std::cout << "      Cleaning TTLs ...\n";
-    std::cout << "======================================================\n";
-    this->clean_ttl();
     std::cout << "======================================================\n";
     std::cout << "      Validating Pin Map ...\n";
     std::cout << "======================================================\n";
     this->validate_pin();
 
-    for(auto op : readyQueue) {
-        std::cout << "======================================================\n";
-        std::cout << "OPERATOR NAME: " << op->getName() << std::endl;
-        auto tensor_vector = op->getInputs();
-        std::cout << "TENSOR INPUTS: " << std::endl;
-        for(auto tensor : tensor_vector) {
-            std::cout << tensor->getName() << std::endl;
-        }
-
-        std::cout << "TENSOR OUTPUTS: " << std::endl;
-        tensor_vector = op->getOutputs();
-        for(auto tensor : tensor_vector) {
-            std::cout << tensor->getName() << std::endl;
-        }
-
-        std::cout << "PINNED TENSORS" << std::endl;
-        auto& pin_vec = tensorPinMap[op];
-        for(auto tensor : pin_vec) {
-            std::cout << tensor->getName() << std::endl;
-        }
-        std::cout << "======================================================\n\n";
+    for(auto &node : tensorPinMap)
+    {
+        print_pin(node);
     }
 }
 
 void GraphAnalyzer::create_pin_schedule()
 {
+    this->remove_ttl_overlaps();
+    this->validate_pin();
 }
 
 void GraphAnalyzer::print_tensor_map()

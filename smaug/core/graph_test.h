@@ -7,7 +7,10 @@
 namespace smaug {
 class GraphTest : public SmaugTest {
     public:
-        GraphAnalyzer buildAndRunNetwork(const std::string& modelTopo,
+        Tensor* buildAndRunNetwork(const std::string& modelTopo,
+                const std::string& modelParams);
+
+        GraphAnalyzer buildAnalyzer(const std::string& modelTopo,
                 const std::string& modelParams);
 };
 }  // namespace smaug
