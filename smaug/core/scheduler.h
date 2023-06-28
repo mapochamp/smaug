@@ -1,3 +1,6 @@
+#ifndef _CORE_SCHEDULE_H_
+#define _CORE_SCHEDULE_H_
+
 #include <list>
 
 #include "smaug/core/network.h"
@@ -47,3 +50,4 @@ class Scheduler {
 };
 
 }  // namespace smaug
+#endif

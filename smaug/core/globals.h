@@ -39,7 +39,6 @@ extern ThreadPool* threadPool;
  * support exists.
  */
 extern bool useSystolicArrayWhenAvailable;
-
 }  // namespace smaug
 
 #endif
