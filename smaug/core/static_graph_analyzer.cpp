@@ -504,7 +504,7 @@ void GraphAnalyzer::create_pin_map()
     }
 }
 
-void GraphAnalyzer::create_ilp_map()
+void GraphAnalyzer::create_ilp_map(std::string map_path)
 {
     uint32_t op_cycle{};
     uint32_t tensorNum{};
@@ -615,7 +615,7 @@ void GraphAnalyzer::create_ilp_map()
     std::vector<std::vector<std::vector<int>>> spmMaps{spm0Map, spm1Map, spm2Map};
     for(int i = 0; i < 3; i++) {
         std::ofstream matrixFile;
-        std::string fileName = "matrixFile" + std::to_string(i) + ".txt";
+        std::string fileName = map_path + "matrixFile" + std::to_string(i) + ".txt";
         matrixFile.open(fileName);
         auto& array = spmMaps[i];
         for(auto &op_cycle : array) {

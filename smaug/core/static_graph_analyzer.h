@@ -26,7 +26,7 @@ class GraphAnalyzer : public Scheduler {
         GraphAnalyzer(Network* _network, Workspace* _workspace, int _spad_count) : Scheduler(_network, _workspace), spad_count{_spad_count} {}
 
         void compare_schedule_list();
-        void create_ilp_map();
+        void create_ilp_map(std::string map_path);
         void populate_pin_map();
         // creates a schedule of all the ops in the network wihtout executing
         // any of them so that we have a reference to the execution schedule
