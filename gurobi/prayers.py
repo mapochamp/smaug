@@ -18,13 +18,19 @@ for i in range(len(tensor_mappings[0][0])):
     n.append(i)
 # size of tensors
 # TODO: these values would be from a generated file
-s = []
-for i in n:
-    s.append(100)
+sizeFile = "sizeFile.txt"
+s = read_file_to_arrays(sizeFile)[0]
+print("\nsizeFile stuff")
+print(len(s))
+print(s)
+
+#s = []
+#for i in n:
+#    s.append(100)
 
 # size of spms
 # TODO: these values would be from a generated file
-q = [256, 256, 256]
+q = [32768, 32768, 32768]
 
 
 K = len(tensor_mappings)
@@ -36,7 +42,7 @@ print("M = ", M)
 print("N = ", N)
 
 
-# TODO: loop through the life times to constrain begin times
+# loop through the life times to constrain begin times
 # make a dict (tensor id , born time)
 # if( time the tensor id appears > born time, ignore): else populate it with
 # born time

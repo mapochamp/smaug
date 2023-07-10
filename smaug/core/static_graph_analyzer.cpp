@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 
+#include "backend.h"
 #include "smaug/core/static_graph_analyzer.h"
 #include "smaug/utility/debug_stream.h"
 
@@ -532,6 +533,8 @@ void GraphAnalyzer::create_ilp_map(std::string map_path)
         std::cout << "      operator: " << op->getName() << "...\n";
         for(auto tensor : inputs_and_output) {
             if(!uniqueTensorNumberMap.count(tensor)) {
+                tensorSizeMap.insert_or_assign(tensorNum,
+                        tensor->getShape().storageSize());
                 uniqueTensorNumberMap.insert_or_assign(tensor, tensorNum);
                 std::cout << "      tensor: " << tensor->getName() 
                     << " tensorNumber = " << tensorNum << "\n";
@@ -611,6 +614,23 @@ void GraphAnalyzer::create_ilp_map(std::string map_path)
     for(int i = 0; i < spm0Map.size(); i++){
         print_array(spm0Map[i], spm1Map[i], spm2Map[i]);
     }
+
+
+    // TODO: create file of all tensor sizes
+    // TODO: make sure if the tensor size is greater than the spm size then we make it the size of the spm
+    // TODO: create file of spm sizes
+    
+    std::ofstream tensorSizeFile;
+    std::string fileName = map_path + "sizeFile.txt";
+    tensorSizeFile.open(fileName);
+    for(int i = 0; i < num_tensors; i++) {
+        uint32_t size = tensorSizeMap[i];
+        if(size > smv::kSpadSize) {
+            size = smv::kSpadSize;
+        }
+        tensorSizeFile << size << " ";
+    }
+    tensorSizeFile.close();
 
     std::vector<std::vector<std::vector<int>>> spmMaps{spm0Map, spm1Map, spm2Map};
     for(int i = 0; i < 3; i++) {

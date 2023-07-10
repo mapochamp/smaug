@@ -90,6 +90,7 @@ class GraphAnalyzer : public Scheduler {
         std::vector<std::vector<std::vector<int>>> allSpmMatrix;
         std::map<uint32_t, std::vector<TensorBase*>> op_cycle_to_input_output_mapping;
         std::map<TensorBase*, uint32_t> uniqueTensorNumberMap;
+        std::map<uint32_t, uint32_t> tensorSizeMap;
 };
 } //smaug
 #endif

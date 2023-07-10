@@ -52,9 +52,7 @@ SRCS = smaug/operators/common.cpp \
        smaug/operators/smv/kernels/load_store_fp16_data.c \
        smaug/operators/smv/smv_accel_pool.cpp \
        smaug/core/backend.cpp \
-       smaug/core/static_graph_analyzer.cpp \
-       smaug/core/liveness_data.cpp \
-       smaug/core/graph_test.cpp \
+       smaug/core/pin.cpp \
        smaug/core/globals.cpp \
        smaug/core/tensor.cpp \
        smaug/core/tensor_utils.cpp \
@@ -65,6 +63,10 @@ SRCS = smaug/operators/common.cpp \
        smaug/utility/debug_stream.cpp \
        smaug/utility/utils.cpp \
        smaug/utility/thread_pool.cpp
+       #smaug/core/static_graph_analyzer.cpp \
+       #smaug/core/liveness_data.cpp \
+       #smaug/core/graph_test.cpp \
+
 PROTO_SRCS = smaug/core/graph.proto \
              smaug/core/node.proto \
              smaug/core/tensor.proto \
