@@ -1,0 +1,75 @@
+from gurobipy import Model, GRB, quicksum
+import gurobipy as gp
+from data_formatting import read_file_to_arrays
+import sys
+
+file_names = ["matrixFile0.txt", "matrixFile1.txt", "matrixFile2.txt"]
+
+# tensors
+tensor_mappings = []
+
+for file_name in file_names:
+    k = read_file_to_arrays(file_name)
+    tensor_mappings.append(k)
+
+# tensor id's
+n = []
+for i in range(len(tensor_mappings[0][0])):
+    n.append(i)
+# size of tensors
+# TODO: these values would be from a generated file
+s = []
+for i in n:
+    s.append(100)
+
+# size of spms
+# TODO: these values would be from a generated file
+q = [256, 256, 256]
+
+
+K = len(tensor_mappings)
+M = len(tensor_mappings[0])
+N = len(tensor_mappings[0][0])
+
+# create matrix that defines whether a tensor has to exist for an operation or not
+A = []
+# oh my fucking god i want to kms. this is so fucking stupid. im just
+# creating a multi dimensional array of 0s bc i dont want to deal with
+# numpy types
+for m in range(M):
+    temp = []
+    for n in range(N):
+       temp.append(0) 
+    A.append(temp)
+
+for k in range(K):
+    for m in range(M):
+        for n in range(N):
+            if tensor_mappings[k][m][n] == 1:
+                A[m][n] = 1
+
+model = gp.Model("spm")
+X = {}
+for k in range(K):
+    for m in range(M):
+        for n in range(N):
+            X[k, m, n] = model.addVar(vtype=GRB.BINARY, name=f"X_{k}_{m}_{n}")
+            X[k, m, n].start = tensor_mappings[k][m][n]
+
+
+for m in range(M):
+    for n in range(N):
+        if A[m][n] == 1:
+            model.addConstr(quicksum(X[k, m, n] for k in
+                            range(K)) == 1)
+
+for k in range(K):
+    for m in range(M):
+        model.addConstr(quicksum(X[k, m, n]*s[n] for n in range(N)) <= q[k])
+
+model.setObjective(
+	sum(sum(sum(X[k, m+1, n] - X[k, m, n] for n in range(N)) for m in range(M-1))
+			for k in range(K))
+    ), GRB.MINIMIZE)
+
+model.optimize()

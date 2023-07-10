@@ -1,0 +1,59 @@
+Restricted license - for non-production use only - expires 2024-10-28
+Gurobi Optimizer version 10.0.2 build v10.0.2rc0 (linux64)
+
+CPU model: AMD Ryzen 7 3700X 8-Core Processor, instruction set [SSE2|AVX|AVX2]
+Thread count: 8 physical cores, 16 logical processors, using up to 16 threads
+
+Optimize a model with 269 rows, 300 columns and 912 nonzeros
+Model fingerprint: 0x2058df47
+Variable types: 0 continuous, 300 integer (150 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+02]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 3e+02]
+
+User MIP start produced solution with objective 23 (0.00s)
+Loaded user MIP start with objective 23
+
+Presolve removed 0 rows and 30 columns
+Presolve time: 0.00s
+Presolved: 269 rows, 270 columns, 912 nonzeros
+Variable types: 0 continuous, 270 integer (270 binary)
+Found heuristic solution: objective 19.0000000
+
+Root relaxation: objective 8.000000e+00, 225 iterations, 0.00 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+*    0     0               0       8.0000000    8.00000  0.00%     -    0s
+
+Explored 1 nodes (225 simplex iterations) in 0.01 seconds (0.00 work units)
+Thread count was 16 (of 16 available processors)
+
+Solution count 3: 8 19 23 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 8.000000000000e+00, best bound 8.000000000000e+00, gap 0.0000%
+0.0 1.0 0.0 -0.0 -0.0 1.0 0.0 0.0 -0.0 -0.0 
+0.0 1.0 -0.0 0.0 0.0 1.0 -0.0 0.0 0.0 0.0 
+0.0 1.0 1.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
+0.0 0.0 1.0 1.0 0.0 -0.0 -0.0 0.0 0.0 0.0 
+-0.0 -0.0 1.0 1.0 0.0 0.0 0.0 0.0 -0.0 0.0 
+
+
+0.0 0.0 0.0 -0.0 -0.0 0.0 0.0 1.0 1.0 -0.0 
+0.0 0.0 0.0 0.0 0.0 -0.0 0.0 1.0 1.0 0.0 
+0.0 0.0 -0.0 0.0 0.0 0.0 0.0 1.0 1.0 0.0 
+0.0 0.0 0.0 0.0 0.0 0.0 0.0 1.0 1.0 0.0 
+-0.0 0.0 0.0 0.0 0.0 -0.0 -0.0 1.0 1.0 0.0 
+
+
+1.0 0.0 0.0 0.0 -0.0 0.0 1.0 -0.0 0.0 0.0 
+0.0 0.0 0.0 -0.0 0.0 0.0 1.0 0.0 -0.0 0.0 
+0.0 0.0 0.0 -0.0 0.0 0.0 1.0 0.0 0.0 0.0 
+0.0 0.0 0.0 0.0 0.0 0.0 -0.0 0.0 0.0 1.0 
+-0.0 -0.0 -0.0 0.0 1.0 -0.0 0.0 -0.0 -0.0 1.0 
+
+

@@ -1,0 +1,10 @@
+\ Model spm_copy
+\ LP format - for model browsing. Use MPS format to capture full model detail.
+Minimize
+ 
+Subject To
+ R0: y[0,0,0] = -1
+Bounds
+Generals
+ y[0,0,0]
+End
