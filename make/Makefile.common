@@ -62,10 +62,10 @@ SRCS = smaug/operators/common.cpp \
        smaug/core/scheduler.cpp \
        smaug/utility/debug_stream.cpp \
        smaug/utility/utils.cpp \
-       smaug/utility/thread_pool.cpp
-       #smaug/core/static_graph_analyzer.cpp \
-       #smaug/core/liveness_data.cpp \
-       #smaug/core/graph_test.cpp \
+       smaug/utility/thread_pool.cpp\
+       smaug/core/static_graph_analyzer.cpp \
+       smaug/core/liveness_data.cpp \
+       smaug/core/graph_test.cpp
 
 PROTO_SRCS = smaug/core/graph.proto \
              smaug/core/node.proto \

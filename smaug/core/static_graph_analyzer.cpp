@@ -625,9 +625,10 @@ void GraphAnalyzer::create_ilp_map(std::string map_path)
     tensorSizeFile.open(fileName);
     for(int i = 0; i < num_tensors; i++) {
         uint32_t size = tensorSizeMap[i];
-        if(size > smv::kSpadSize) {
-            size = smv::kSpadSize;
-        }
+        // we moved this to the eval script isntead
+        //if(size > smv::kSpadSize) {
+        //    size = smv::kSpadSize;
+        //}
         tensorSizeFile << size << " ";
     }
     tensorSizeFile.close();
