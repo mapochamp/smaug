@@ -1,0 +1,40 @@
+cnn
+base dma sum =  137
+optimal dma sum =  43
+fraction =  68.61313868613139 %
+
+elu
+base dma sum =  127
+optimal dma sum =  62
+fraction =  51.181102362204726 %
+
+large_elu
+base dma sum =  207
+optimal dma sum =  110
+fraction =  46.85990338164251 %
+
+lenet5
+base dma sum =  47
+optimal dma sum =  11
+fraction =  76.59574468085107 %
+
+lstm
+base dma sum =  585
+optimal dma sum =  144
+fraction =  75.38461538461539 %
+
+minerva
+base dma sum =  43
+optimal dma sum =  12
+fraction =  72.09302325581395 %
+
+resnet
+base dma sum =  1863
+optimal dma sum =  1148
+fraction =  38.378958668813745 %
+
+vgg
+base dma sum =  139
+optimal dma sum =  67
+fraction =  51.798561151079134 %
+

@@ -30,7 +30,12 @@ print(s)
 
 # size of spms
 # TODO: these values would be from a generated file
-q = [32768, 32768, 32768]
+q = [int(sys.argv[1]), int(sys.argv[1]), int(sys.argv[1])]
+print(q)
+
+for i in range(len(s)):
+    if s[i] > q[0]:
+        s[i] = q[0]
 
 
 K = len(tensor_mappings)

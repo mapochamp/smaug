@@ -39,4 +39,4 @@ for k in range(K):
 
 print("base dma sum = ", sum_dma_base)
 print("optimal dma sum = ", sum_dma_optimal)
-print("fraction = ", (1-(sum_dma_optimal/sum_dma_base))*100 , "%")
+#print("fraction = ", (1-(sum_dma_optimal/sum_dma_base))*100 , "%")

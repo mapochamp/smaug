@@ -1,0 +1,2 @@
+base dma sum =  139
+optimal dma sum =  42
