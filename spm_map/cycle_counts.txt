@@ -1,0 +1,54 @@
+cnn:
+total DMA cycles
+949542
+total Acc cycles
+2383820
+
+lenet5:
+total DMA cycles
+262566
+
+total Acc cycles
+643727
+
+lstm:
+total DMA cycles
+57600
+
+total Acc cycles
+136278
+
+minerva:
+total DMA cycles
+252504
+
+total Acc cycles
+529860
+
+elu:
+total DMA cycles
+1065990
+
+total Acc cycles
+2433286
+
+resnet:
+total DMA cycles
+1609866
+
+total Acc cycles
+3878749
+
+large elu:
+total DMA cycles
+11122368
+
+total Acc cycles
+24602410
+
+vgg:
+total DMA cycles
+1622208
+
+total Acc cycles
+3676823
